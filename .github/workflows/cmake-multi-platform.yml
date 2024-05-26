@@ -57,9 +57,9 @@ jobs:
       run: |
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
     
-    - name: Install libboost (Linux)
+    - name: Install libboost, libmodbus and libpaho-mqtt (Linux)
       if: ${{ matrix.os != 'windows-latest' }}
-      run: sudo apt-get install -y libboost-all-dev
+      run: sudo apt-get install -y libboost-all-dev libmodbus-dev libpaho-mqtt-dev
 
     - name: Install boost (Windows)
       if: ${{ matrix.os == 'windows-latest' }}
@@ -79,6 +79,8 @@ jobs:
         -DFORTE_COM_FBDK=ON
         -DFORTE_COM_HTTP=ON
         -DFORTE_COM_LOCAL=ON
+        -DFORTE_COM_MODBUS=${{ matrix.os == 'windows-latest' && 'OFF' || 'ON' }}
+        -DFORTE_COM_PAHOMQTT=${{ matrix.os == 'windows-latest' && 'OFF' || 'ON' }}
         -DFORTE_COM_RAW=ON
         -DFORTE_COM_SER=ON
         -DFORTE_COM_STRUCT_MEMBER=ON
